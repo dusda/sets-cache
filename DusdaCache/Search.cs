@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ListingHash
+namespace DusdaCache
 {
   public abstract class SearchBase<T>
   {

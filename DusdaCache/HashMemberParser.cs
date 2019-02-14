@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ListingHash
+namespace DusdaCache
 {
   public static class HashMemberParser
   {
@@ -67,7 +67,7 @@ namespace ListingHash
       string fVal = string.Empty;
       if (prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum)
       {
-        if ((int)val > 15)
+        if ((int)val > 0xf)
           throw new ArgumentException($"integer Property {prop.Name} must be no greater than 15.");
         fVal = ((int)val).ToString("X");
       }

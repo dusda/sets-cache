@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace ListingHash
+namespace DusdaCache
 {
   class Program
   {

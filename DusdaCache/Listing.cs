@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ListingHash
+namespace DusdaCache
 {
   public class Listing
   {

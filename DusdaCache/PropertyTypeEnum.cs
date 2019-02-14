@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace ListingHash
+namespace DusdaCache
 {
   public enum PropertyType
   {
