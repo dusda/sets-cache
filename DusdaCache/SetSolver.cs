@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace DusdaCache
 {
-  public class SubsetSolver
+  public class SetSolver
   {
     /// <summary>
-    /// Determines all combinatorial subsets for a given set of integers.
+    /// Determines all subsets for a given set of integers.
     /// </summary>
     /// <param name="values">The set to solve.</param>
     /// <param name="fill">Whether to fill empty parts of the set with 0.</param>

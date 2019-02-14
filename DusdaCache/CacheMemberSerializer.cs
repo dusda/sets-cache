@@ -34,7 +34,7 @@ namespace DusdaCache
       for (int i = 0; i < items.Length; i++)
         items[i] = i + 1;
 
-      var subsets = SubsetSolver.Solve(items, fill: true);
+      var subsets = SetSolver.Solve(items, fill: true);
       var keys = new List<string>();
       var sb = new StringBuilder();
 

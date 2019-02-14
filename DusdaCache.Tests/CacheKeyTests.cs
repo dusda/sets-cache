@@ -7,7 +7,16 @@ namespace DusdaCache.Tests
   public class CacheKeyTests
   {
     [Fact]
-    public void HashTest()
+    public void DefaultHashTest()
+    {
+      var search = new ListingSearch();
+      var hash = CacheMemberSerializer.GetHash(search);
+
+      Assert.Equal("######", hash);
+    }
+
+    [Fact]
+    public void CacheTest()
     {
       var search = new ListingSearch
       {
@@ -25,14 +34,32 @@ namespace DusdaCache.Tests
     }
 
     [Fact]
-    public void DefaultHashTest()
+    public void CacheSetTest()
     {
-      var search = new ListingSearch();
-      var hash = CacheMemberSerializer.GetHash(search);
+      var search = new ListingSearch
+      {
+        PropertyType = PropertyType.Apartment,
+        Bedrooms = 10,
+        Bathrooms = 1
+      };
 
-      Assert.Equal("######", hash);
+      var set = new string[]
+      {
+        "2a1###",
+        "#a1###",
+        "2#1###",
+        "##1###",
+        "2a####",
+        "#a####",
+        "2#####",
+        "######"
+      };
+
+      var res = CacheMemberSerializer.GetHashSet(search);
+
+      Assert.Equal(set, res);
     }
-    
+
     [Fact]
     public void CacheMemberThrowsException()
     {
@@ -45,28 +72,6 @@ namespace DusdaCache.Tests
 
       //Currently only supports ints up to 15, since it's stored as hex.
       Assert.Throws<ArgumentException>(action);
-    }
-
-    void Bleh()
-    {
-      var search = new ListingSearch
-      {
-        PropertyType = PropertyType.Any,
-        Bedrooms = 10,
-        Bathrooms = 1,
-        City = "Portland",
-        State = "OR",
-        Zip = "97209"
-      };
-
-      var hash = CacheMemberSerializer.GetHash(search);
-      var set = CacheMemberSerializer.GetHashSet(search);
-
-      var items = new int[] { 1, 2, 3 };
-      var res = SubsetSolver.Solve(items);
-
-      var json = JsonConvert.SerializeObject(res, Formatting.Indented);
-      Console.WriteLine(json);
     }
   }
 }
