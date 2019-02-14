@@ -8,25 +8,7 @@ namespace DusdaCache
   {
     static void Main(string[] args)
     {
-      var search = new ListingSearch
-      {
-        PropertyType = PropertyType.Any,
-        Bedrooms = 10,
-        Bathrooms = 1,
-        City = "Portland",
-        State = "OR",
-        Zip = "97209"
-      };
-
-      var hash = HashMemberParser.GetHash(search);
-      var set = HashMemberParser.GetHashSet(search);
-
-      var items = new int[] { 1, 2, 3 };
-      var res = SubsetSolver.Solve(items);
-
-      var json = JsonConvert.SerializeObject(res, Formatting.Indented);
-      Console.WriteLine(json);
-
+      
     }
 
     static List<Listing> GetListings()

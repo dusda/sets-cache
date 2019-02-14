@@ -15,19 +15,19 @@ namespace DusdaCache
 
   public class ListingSearch : SearchBase<Listing>
   {
-    [HashMember(1)]
+    [CacheMember(1)]
     public PropertyType PropertyType { get; set; }
     public double? MinPrice { get; set; }
     public double? MaxPrice { get; set; }
-    [HashMember(2)]
+    [CacheMember(2)]
     public int Bedrooms { get; set; }
-    [HashMember(3)]
+    [CacheMember(3)]
     public int Bathrooms { get; set; }
-    [HashMember(4, "location")]
+    [CacheMember(4, "location")]
     public string City { get; set; }
-    [HashMember(5, "location")]
+    [CacheMember(5, "location")]
     public string State { get; set; }
-    [HashMember(6, "location")]
+    [CacheMember(6, "location")]
     public string Zip { get; set; }
     
     public override string Hash()
@@ -38,7 +38,7 @@ namespace DusdaCache
       // ex: 031-portland,or-97209
 
       return $"{(int)PropertyType}{Bedrooms}{Bathrooms}-{City},{State}-{Zip}"
-        .ToLower();
+        .ToLower();      
     }
   }
 }

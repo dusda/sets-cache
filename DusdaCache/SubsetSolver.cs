@@ -53,9 +53,10 @@ namespace DusdaCache
         }
 
         if(fill)
-          while(list.Count < 6)
+        {
+          while(list.Count < values.Count())
             list.Add(0);
-
+        }
         subsets.Push(list);
       }
 

@@ -6,14 +6,14 @@ using System.Text;
 
 namespace DusdaCache
 {
-  public static class HashMemberParser
+  public static class CacheMemberSerializer
   {
     public static string GetHash<T>(T item)
     {
-      var type = typeof(HashMemberAttribute);
+      var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
         .Where(p => Attribute.IsDefined(p, type))
-        .OrderBy(p => ((HashMemberAttribute)p.GetCustomAttributes(type, false).Single()).Position)
+        .OrderBy(p => ((CacheMemberAttribute)p.GetCustomAttributes(type, false).Single()).Position)
         .Select(p => GetValue(item, p))
         .ToList();
 
@@ -24,10 +24,10 @@ namespace DusdaCache
 
     public static string[] GetHashSet<T>(T obj)
     {
-      var type = typeof(HashMemberAttribute);
+      var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
         .Where(p => Attribute.IsDefined(p, type))
-        .OrderBy(p => ((HashMemberAttribute)p.GetCustomAttributes(type, false).Single()).Position)
+        .OrderBy(p => ((CacheMemberAttribute)p.GetCustomAttributes(type, false).Single()).Position)
         .ToList();
 
       var items = new int[props.Count];
@@ -55,11 +55,11 @@ namespace DusdaCache
       return keys.Distinct().ToArray();
     }
 
-    static string[] defaults = new string[] { "0", "-", string.Empty };
+    static readonly string[] defaults = new string[] { "0", "-", string.Empty };
     static string GetValue<T>(T value, PropertyInfo prop)
     {
-      var attr = prop.GetCustomAttributes(typeof(HashMemberAttribute), false)
-        .FirstOrDefault() as HashMemberAttribute;
+      var attr = prop.GetCustomAttributes(typeof(CacheMemberAttribute), false)
+        .FirstOrDefault() as CacheMemberAttribute;
       var val = prop.GetValue(value);
 
       //attempt to parse as a hexidecimal int (0-f),
