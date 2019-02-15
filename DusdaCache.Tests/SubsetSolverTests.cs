@@ -6,9 +6,9 @@ namespace DusdaCache.Tests
   public class SubsetSolverTests
   {
     [Fact]
-    public void SolvesCorrectly()
+    public void Solves3Correctly()
     {
-      var set = new int[]{1, 2, 3};
+      var set = new int[] { 1, 2, 3 };
       var res = SetSolver.Solve(set)
         .Select(f => f.ToArray())
         .ToArray();
@@ -31,7 +31,7 @@ namespace DusdaCache.Tests
     [Fact]
     public void FillsCorrectly()
     {
-      var set = new int[]{1, 2, 3};
+      var set = new int[] { 1, 2, 3 };
 
       var res = SetSolver.Solve(set, fill: true)
         .Select(f => f.ToArray())

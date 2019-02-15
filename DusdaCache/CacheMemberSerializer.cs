@@ -8,7 +8,7 @@ namespace DusdaCache
 {
   public static class CacheMemberSerializer
   {
-    public static string GetHash<T>(T item)
+    public static string Get<T>(T item)
     {
       var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
@@ -22,7 +22,7 @@ namespace DusdaCache
       return key;
     }
 
-    public static string[] GetHashSet<T>(T obj)
+    public static string[] GetSet<T>(T obj)
     {
       var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
@@ -55,6 +55,36 @@ namespace DusdaCache
       return keys.Distinct().ToArray();
     }
 
+    public static T Parse<T>(string key) where T : class, new()
+    {
+      var type = typeof(CacheMemberAttribute);
+      var props = typeof(T).GetProperties()
+        .Where(p => Attribute.IsDefined(p, type))
+        .OrderBy(p => ((CacheMemberAttribute)p.GetCustomAttributes(type, false).Single()).Position)
+        .ToList();
+
+      //need to parse #'s for ints, dash-delimited strings for strings
+      //###-portland##
+      int index = 0;
+      var item = new T();
+      foreach (var prop in props)
+      {
+        if (prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum)
+        {
+
+          index++;
+        }
+        else
+        {
+          string val = "";
+
+          index+= val.Length;
+        }
+      }
+
+      return item;
+    }
+
     static readonly string[] defaults = new string[] { "0", "-", string.Empty };
     static string GetValue<T>(T value, PropertyInfo prop)
     {
@@ -65,10 +95,10 @@ namespace DusdaCache
       //attempt to parse as a hexidecimal int (0-f),
       //fallback to a string.
       string fVal = string.Empty;
-      if (prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum)
+      if ((prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum))
       {
         if ((int)val > 0xf)
-          throw new ArgumentException($"integer Property {prop.Name} must be no greater than 15.");
+          throw new ArgumentException("Integer value must be less than or equal to 15");
         fVal = ((int)val).ToString("X");
       }
       else

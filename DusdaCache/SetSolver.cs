@@ -28,13 +28,10 @@ namespace DusdaCache
     public static IEnumerable<IEnumerable<int>> Solve(
       IEnumerable<int> values, bool fill = false)
     {
-      //for algorithm reasons, treat the set as a 1-based array.
-      var items = new int[1] { 0 }.Concat(values).ToArray();
-
       uint i, j;
       ushort bit;
       uint max_bits;
-      int size = (int)Math.Pow(2, items.Length - 1);
+      int size = (int)Math.Pow(2, values.Count());
       var subsets = new Stack<IEnumerable<int>>(size);
 
       IList<int> list;
@@ -47,7 +44,7 @@ namespace DusdaCache
         {
           bit = (ushort)((i >> (int)j) & 1);
           if (bit == 1)
-            list.Add(items[j + 1]);
+            list.Add(values.ElementAt((int)j));
           else if(fill)
             list.Add(0);
         }
