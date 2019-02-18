@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -71,14 +72,27 @@ namespace DusdaCache
       {
         if (prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum)
         {
+          var str = key.Substring(index, 1);
+          ushort val = 0;
+
+          if (str != "#")
+            val = ushort.Parse(str, NumberStyles.HexNumber);
+
+          prop.SetValue(item, val);
 
           index++;
         }
         else
         {
-          string val = "";
+          if (key.Substring(index, 1) == "-")
+          {
+            var chars = key.Substring(index + 1)
+              .TakeWhile(f => f != '-')
+              .ToArray();
 
-          index+= val.Length;
+            prop.SetValue(item, new string(chars));
+            index += chars.Length + 1;
+          }
         }
       }
 
@@ -104,7 +118,7 @@ namespace DusdaCache
       else
         fVal = $"-{val}";
 
-      return !defaults.Contains(fVal) ? fVal.ToLower() : "#";
+      return !defaults.Contains(fVal) ? fVal : "#";
     }
   }
 }

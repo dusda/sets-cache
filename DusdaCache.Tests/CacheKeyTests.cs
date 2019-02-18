@@ -30,7 +30,7 @@ namespace DusdaCache.Tests
 
       var hash = CacheMemberSerializer.Get(search);
 
-      Assert.Equal("#a1-portland-or-97209", hash);
+      Assert.Equal("#A1-Portland-OR-97209", hash);
     }
 
     [Fact]
@@ -45,12 +45,12 @@ namespace DusdaCache.Tests
 
       var set = new string[]
       {
-        "2a1###",
-        "#a1###",
+        "2A1###",
+        "#A1###",
         "2#1###",
         "##1###",
-        "2a####",
-        "#a####",
+        "2A####",
+        "#A####",
         "2#####",
         "######"
       };
