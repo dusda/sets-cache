@@ -1,7 +1,6 @@
-using System.Security.Cryptography;
 using System.Text;
 
-namespace DusdaCache
+namespace DusdaCache.Tests
 {
   public class Listing
   {

@@ -84,6 +84,38 @@ namespace DusdaCache.Tests
       Assert.Equal(items.Views, res.Views);
     }
 
+    [Fact]
+    public async Task GetSetWithKeyAndSubKeyOnly()
+    {
+      var stuff = await Set();
+      var cache = stuff.cache;
+      var search = stuff.search;
+      var items = stuff.sub;
+
+      string key = "222-Portland-OR-97209:ListingSearchItems";
+      var res = await cache.GetSub<ListingSearchItems>(key);
+
+      Assert.Equal(items.Nearby, res.Nearby);
+      Assert.Equal(items.Views, res.Views);
+    }
+
+    [Fact]
+    public void Subsets()
+    {
+      var _serializer = services.GetService<CacheMemberSerializer>();
+      var search = new ListingSearch
+      {
+        PropertyType = PropertyType.Apartment,
+        Bedrooms = 3,
+        Bathrooms = 2,
+        City = "Portland",
+        State = "OR",
+        Zip = "97209"
+      };
+
+      var keys = _serializer.GetSubsets(search);
+    }
+
     /// <summary>
     /// Sets up test data, returns a tuple with everything needed in the tests here.
     /// </summary>

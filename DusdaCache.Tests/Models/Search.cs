@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DusdaCache
+namespace DusdaCache.Tests
 {
   public abstract class SearchBase<T>
   {
