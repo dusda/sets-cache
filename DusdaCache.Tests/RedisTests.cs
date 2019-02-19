@@ -18,8 +18,8 @@ namespace DusdaCache.Tests
           o.Configuration = "localhost:6388";
           o.InstanceName = "Tests";
         })
-        .AddSingleton<CacheMemberSerializer>()
-        .AddScoped<Redis.IDusdaCache, Redis.DisduCache>()
+        .AddSingleton<ICacheMemberSerializer, CacheMemberSerializer>()
+        .AddScoped<ISetsCache, Redis.DisduCache>()
         .BuildServiceProvider();
     }
 
@@ -102,7 +102,7 @@ namespace DusdaCache.Tests
     [Fact]
     public void Subsets()
     {
-      var _serializer = services.GetService<CacheMemberSerializer>();
+      var _serializer = services.GetService<ICacheMemberSerializer>();
       var search = new ListingSearch
       {
         PropertyType = PropertyType.Apartment,
@@ -120,12 +120,12 @@ namespace DusdaCache.Tests
     /// Sets up test data, returns a tuple with everything needed in the tests here.
     /// </summary>
     async Task<(
-      Redis.IDusdaCache cache,
+      ISetsCache cache,
       ListingSearch search,
       ListingSearchItems sub)>
     Set()
     {
-      var cache = services.GetService<Redis.IDusdaCache>();
+      var cache = services.GetService<ISetsCache>();
 
       var search = new ListingSearch
       {

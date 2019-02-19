@@ -7,15 +7,27 @@ using System.Text;
 
 namespace DusdaCache
 {
-  public class CacheMemberSerializer
+  public interface ICacheMemberSerializer
+  {
+    string Get<T>();
+    string Get<T>(T item);
+    string Get<T, TSub>(T item, TSub sub);
+    string[] GetSubsets<T>(T obj);
+    T Parse<T>(string key) where T : class, new();
+    (T item, TSub sub) Parse<T, TSub>(string key)
+      where T : class, new()
+      where TSub : class, new();
+  }
+
+  public class CacheMemberSerializer : ICacheMemberSerializer
   {
     public string Get<T>()
     {
       var type = typeof(CacheMemberAttribute);
       var classMember = typeof(T).GetCustomAttribute(type);
-      if(classMember == null)
+      if (classMember == null)
         throw new ArgumentException("Cache keys can only be derived without an instance when defined at class-level");
-      
+
       return typeof(T).Name;
     }
 
@@ -25,7 +37,7 @@ namespace DusdaCache
 
       //if defined at class-level, just return the name of the object.
       var classMember = typeof(T).GetCustomAttribute(type);
-      if(classMember != null)
+      if (classMember != null)
         return typeof(T).Name;
 
       //otherwise build it from the properties
@@ -40,7 +52,7 @@ namespace DusdaCache
       return key;
     }
 
-    public string Get<T, TT>(T item, TT sub)
+    public string Get<T, TSub>(T item, TSub sub)
     {
       var keys = new string[] { Get(item), Get(sub) };
       var key = string.Join(':', keys);
