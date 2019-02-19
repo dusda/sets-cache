@@ -29,7 +29,7 @@ namespace DusdaCache.Tests
       var cache = services.GetService<IDistributedCache>();
       try
       {
-        var item = cache.Get("bleh");
+        var item = cache.Get("bleh"); //should return null
       }
       catch (StackExchange.Redis.RedisConnectionException)
       {
