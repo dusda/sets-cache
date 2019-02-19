@@ -7,9 +7,9 @@ using System.Text;
 
 namespace DusdaCache
 {
-  public static class CacheMemberSerializer
+  public class CacheMemberSerializer
   {
-    public static string Get<T>(T item)
+    public string Get<T>(T item)
     {
       var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
@@ -23,7 +23,7 @@ namespace DusdaCache
       return key;
     }
 
-    public static string[] GetSet<T>(T obj)
+    public string[] GetSet<T>(T obj)
     {
       var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
@@ -56,7 +56,7 @@ namespace DusdaCache
       return keys.Distinct().ToArray();
     }
 
-    public static T Parse<T>(string key) where T : class, new()
+    public T Parse<T>(string key) where T : class, new()
     {
       var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
@@ -99,8 +99,8 @@ namespace DusdaCache
       return item;
     }
 
-    static readonly string[] defaults = new string[] { "0", "-", string.Empty };
-    static string GetValue<T>(T value, PropertyInfo prop)
+    readonly string[] defaults = new string[] { "0", "-", string.Empty };
+    string GetValue<T>(T value, PropertyInfo prop)
     {
       var attr = prop.GetCustomAttributes(typeof(CacheMemberAttribute), false)
         .FirstOrDefault() as CacheMemberAttribute;

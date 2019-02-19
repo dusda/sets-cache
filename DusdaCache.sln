@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DusdaCache", "DusdaCache\Du
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DusdaCache.Tests", "DusdaCache.Tests\DusdaCache.Tests.csproj", "{0CEBC88A-B2F5-4FF5-B2F5-147597C9BC95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DusdaCache.Redis", "DusdaCache.Redis\DusdaCache.Redis.csproj", "{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{0CEBC88A-B2F5-4FF5-B2F5-147597C9BC95}.Release|x64.Build.0 = Release|Any CPU
 		{0CEBC88A-B2F5-4FF5-B2F5-147597C9BC95}.Release|x86.ActiveCfg = Release|Any CPU
 		{0CEBC88A-B2F5-4FF5-B2F5-147597C9BC95}.Release|x86.Build.0 = Release|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Debug|x64.Build.0 = Debug|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Release|x64.ActiveCfg = Release|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Release|x64.Build.0 = Release|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

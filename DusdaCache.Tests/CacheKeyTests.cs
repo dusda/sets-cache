@@ -9,8 +9,9 @@ namespace DusdaCache.Tests
     [Fact]
     public void DefaultHashTest()
     {
+      var serializer = new CacheMemberSerializer();
       var search = new ListingSearch();
-      var hash = CacheMemberSerializer.Get(search);
+      var hash = serializer.Get(search);
 
       Assert.Equal("######", hash);
     }
@@ -18,6 +19,7 @@ namespace DusdaCache.Tests
     [Fact]
     public void CacheTest()
     {
+      var serializer = new CacheMemberSerializer();      
       var search = new ListingSearch
       {
         PropertyType = PropertyType.Any,
@@ -28,7 +30,7 @@ namespace DusdaCache.Tests
         Zip = "97209"
       };
 
-      var hash = CacheMemberSerializer.Get(search);
+      var hash = serializer.Get(search);
 
       Assert.Equal("#A1-Portland-OR-97209", hash);
     }
@@ -36,6 +38,7 @@ namespace DusdaCache.Tests
     [Fact]
     public void CacheSetTest()
     {
+      var serializer = new CacheMemberSerializer();
       var search = new ListingSearch
       {
         PropertyType = PropertyType.Apartment,
@@ -55,7 +58,7 @@ namespace DusdaCache.Tests
         "######"
       };
 
-      var res = CacheMemberSerializer.GetSet(search);
+      var res = serializer.GetSet(search);
 
       Assert.Equal(set, res);
     }

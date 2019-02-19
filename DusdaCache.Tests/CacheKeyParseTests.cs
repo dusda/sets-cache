@@ -7,8 +7,9 @@ namespace DusdaCache.Tests
     [Fact]
     public void Parses()
     {
+      var serializer = new CacheMemberSerializer();
       var key = "#a1-Portland-OR-97209";
-      var item = CacheMemberSerializer.Parse<ListingSearch>(key);
+      var item = serializer.Parse<ListingSearch>(key);
 
       Assert.Equal(0, (int)item.PropertyType);
       Assert.Equal(10, item.Bedrooms);
