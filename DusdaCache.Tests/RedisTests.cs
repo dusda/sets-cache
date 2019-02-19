@@ -19,7 +19,7 @@ namespace DusdaCache.Tests
           o.InstanceName = "Tests";
         })
         .AddSingleton<CacheMemberSerializer>()
-        .AddTransient<DusdaCache.Redis.DusdaCache>()
+        .AddScoped<Redis.IDusdaCache, Redis.DisduCache>()
         .BuildServiceProvider();
     }
 
@@ -27,6 +27,7 @@ namespace DusdaCache.Tests
     public void RedisRunning()
     {
       var cache = services.GetService<IDistributedCache>();
+
       try
       {
         var item = cache.Get("bleh"); //should return null
@@ -40,18 +41,17 @@ namespace DusdaCache.Tests
     }
 
     [Fact]
-    public async Task GetSetGetGeneric()
+    public async Task GetSubGeneric()
     {
       var stuff = await Set();
       var cache = stuff.cache;
       var search = stuff.search;
-      var items = stuff.items;
+      var sub = stuff.sub;
 
-      var res = await cache.Get<ListingSearch, ListingSearchItems>(search);
+      var res = await cache.GetSub(search, sub);
 
-      Assert.Equal(search, res.Item1);
-      Assert.Equal(items.Nearby, res.Item2.Nearby);
-      Assert.Equal(items.Views, res.Item2.Views);
+      Assert.Equal(sub.Nearby, res.Nearby);
+      Assert.Equal(sub.Views, res.Views);
     }
 
     [Fact]
@@ -60,18 +60,13 @@ namespace DusdaCache.Tests
       var stuff = await Set();
       var cache = stuff.cache;
       var search = stuff.search;
-      var items = stuff.items;
+      var sub = stuff.sub;
+      var key = "222-Portland-OR-97209";
 
-      var res = await cache.Get<ListingSearch, ListingSearchItems>("222-Portland-OR-97209");
+      var res = await cache.GetSub<ListingSearchItems>(key);
 
-      Assert.Equal(search.PropertyType, res.Item1.PropertyType);
-      Assert.Equal(search.Bedrooms, res.Item1.Bedrooms);
-      Assert.Equal(search.Bathrooms, res.Item1.Bathrooms);
-      Assert.Equal(search.City, res.Item1.City);
-      Assert.Equal(search.State, res.Item1.State);
-      Assert.Equal(search.Zip, res.Item1.Zip);
-      Assert.Equal(items.Nearby, res.Item2.Nearby);
-      Assert.Equal(items.Views, res.Item2.Views);
+      Assert.Equal(sub.Nearby, res.Nearby);
+      Assert.Equal(sub.Views, res.Views);
     }
 
     [Fact]
@@ -80,10 +75,10 @@ namespace DusdaCache.Tests
       var stuff = await Set();
       var cache = stuff.cache;
       var search = stuff.search;
-      var items = stuff.items;
+      var items = stuff.sub;
 
       string key = "222-Portland-OR-97209";
-      var res = await cache.Get<ListingSearchItems>(key);
+      var res = await cache.GetSub<ListingSearchItems>(key);
 
       Assert.Equal(items.Nearby, res.Nearby);
       Assert.Equal(items.Views, res.Views);
@@ -92,9 +87,13 @@ namespace DusdaCache.Tests
     /// <summary>
     /// Sets up test data, returns a tuple with everything needed in the tests here.
     /// </summary>
-    async Task<(DusdaCache.Redis.DusdaCache cache, ListingSearch search, ListingSearchItems items)> Set()
+    async Task<(
+      Redis.IDusdaCache cache,
+      ListingSearch search,
+      ListingSearchItems sub)>
+    Set()
     {
-      var cache = services.GetService<DusdaCache.Redis.DusdaCache>();
+      var cache = services.GetService<Redis.IDusdaCache>();
 
       var search = new ListingSearch
       {
@@ -106,7 +105,7 @@ namespace DusdaCache.Tests
         Zip = "97209"
       };
 
-      var items = new ListingSearchItems
+      var sub = new ListingSearchItems
       {
         Views = 1,
         Nearby = new string[]
@@ -116,9 +115,9 @@ namespace DusdaCache.Tests
          }
       };
 
-      await cache.Set(search, items);
+      await cache.SetSub(search, sub);
 
-      return (cache, search, items);
+      return (cache, search, sub);
     }
   }
 }

@@ -2,7 +2,7 @@ using ProtoBuf;
 
 namespace DusdaCache.Tests
 {
-  [ProtoContract]
+  [ProtoContract, CacheMember]
   public class ListingSearchItems
   {
     [ProtoMember(1)]

@@ -58,7 +58,7 @@ namespace DusdaCache.Tests
         "######"
       };
 
-      var res = serializer.GetSet(search);
+      var res = serializer.GetSubsets(search);
 
       Assert.Equal(set, res);
     }

@@ -9,9 +9,26 @@ namespace DusdaCache
 {
   public class CacheMemberSerializer
   {
+    public string Get<T>()
+    {
+      var type = typeof(CacheMemberAttribute);
+      var classMember = typeof(T).GetCustomAttribute(type);
+      if(classMember == null)
+        throw new ArgumentException("Cache keys can only be derived without an instance when defined at class-level");
+      
+      return typeof(T).Name;
+    }
+
     public string Get<T>(T item)
     {
       var type = typeof(CacheMemberAttribute);
+
+      //if defined at class-level, just return the name of the object.
+      var classMember = typeof(T).GetCustomAttribute(type);
+      if(classMember != null)
+        return typeof(T).Name;
+
+      //otherwise build it from the properties
       var props = typeof(T).GetProperties()
         .Where(p => Attribute.IsDefined(p, type))
         .OrderBy(p => ((CacheMemberAttribute)p.GetCustomAttributes(type, false).Single()).Position)
@@ -23,7 +40,15 @@ namespace DusdaCache
       return key;
     }
 
-    public string[] GetSet<T>(T obj)
+    public string Get<T, TT>(T item, TT sub)
+    {
+      var keys = new string[] { Get(item), Get(sub) };
+      var key = string.Join(':', keys);
+
+      return key;
+    }
+
+    public string[] GetSubsets<T>(T obj)
     {
       var type = typeof(CacheMemberAttribute);
       var props = typeof(T).GetProperties()
@@ -95,6 +120,19 @@ namespace DusdaCache
           }
         }
       }
+
+      return item;
+    }
+
+    public (T item, TSub sub) Parse<T, TSub>(string key)
+      where T : class, new()
+      where TSub : class, new()
+    {
+      var keys = key.Split(':');
+      if (keys.Length != 2)
+        throw new ArgumentException("Key must be in item:sub format.");
+
+      (T, TSub) item = (Parse<T>(keys[0]), Parse<TSub>(keys[1]));
 
       return item;
     }

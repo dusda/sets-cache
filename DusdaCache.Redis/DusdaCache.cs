@@ -7,11 +7,47 @@ using DusdaCache.Extensions;
 
 namespace DusdaCache.Redis
 {
-  public class DusdaCache
+
+  public interface IDusdaCache
+  {
+    Task<T> Get<T>(
+      string key,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new();
+
+    Task<T> Get<T>(
+      T item,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new();
+
+    Task<TSub> GetSub<TSub>(
+      string key,
+      CancellationToken token = default(CancellationToken))
+        where TSub : class, new();
+
+    Task<TSub> GetSub<T, TSub>(
+      T item, TSub sub,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new()
+        where TSub : class, new();
+
+    Task Set<T>(
+      T item,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new();
+
+    Task SetSub<T, TSub>(
+      T item, TSub sub,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new()
+        where TSub : class, new();
+  }
+
+  public class DisduCache : IDusdaCache
   {
     IDistributedCache _cache;
     CacheMemberSerializer _serializer;
-    public DusdaCache(
+    public DisduCache(
       IDistributedCache cache,
       CacheMemberSerializer serializer)
     {
@@ -22,7 +58,7 @@ namespace DusdaCache.Redis
     public async Task<T> Get<T>(
       string key,
       CancellationToken token = default(CancellationToken))
-      where T : class, new()
+        where T : class, new()
     {
       var bytes = await _cache.GetAsync(key, token);
       var res = bytes.Deserialize<T>();
@@ -30,44 +66,65 @@ namespace DusdaCache.Redis
       return res;
     }
 
-    public async Task<(T, TT)> Get<T, TT>(
-      string key, CancellationToken token = default(CancellationToken))
-      where T : class, new()
-      where TT : class, new()
-    {
-      var item = _serializer.Parse<T>(key);
-      var bytes = await _cache.GetAsync(key, token);
-      var res = bytes.Deserialize<TT>();
-
-      return (item, res);
-    }
-
-    public async Task<(T, TT)> Get<T, TT>(
-      T obj, CancellationToken token = default(CancellationToken))
-    {
-      var key = _serializer.Get<T>(obj);
-      var bytes = await _cache.GetAsync(key, token);
-      var item = bytes.Deserialize<TT>();
-
-      return (obj, item);
-    }
-
-    public async Task Set<T, TT>(
-      T obj, TT values,
+    public async Task<T> Get<T>(
+      T item,
       CancellationToken token = default(CancellationToken))
+        where T : class, new()
     {
-      var key = _serializer.Get(obj);
-      var bytes = values.ToBinaryArray();
-      await _cache.SetAsync(key, bytes, token);
+      var key = _serializer.Get(item);
+      var bytes = await _cache.GetAsync(key, token);
+      item = bytes.Deserialize<T>();
+
+      return item;
     }
 
-    public async Task Set<T, TT>(
-      (T, TT) obj,
+    public async Task<TSub> GetSub<TSub>(
+      string key,
       CancellationToken token = default(CancellationToken))
+        where TSub : class, new()
     {
-      var key = _serializer.Get(obj.Item1);
-      var bytes = obj.Item2.ToBinaryArray();
-      await _cache.SetAsync(key, bytes, token);
+      if(!key.Contains(':'))
+        key += ":" + _serializer.Get<TSub>();
+      var bytes = await _cache.GetAsync(key, token);
+      var res = bytes.Deserialize<TSub>();
+
+      return res;
+    }
+
+    public async Task<TSub> GetSub<T, TSub>(
+      T item,
+      TSub sub,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new()
+        where TSub : class, new()
+    {
+      var key = _serializer.Get(item, sub);
+      var bytes = await _cache.GetAsync(key, token);
+      sub = bytes.Deserialize<TSub>();
+
+      return sub;
+    }
+
+    public async Task Set<T>(
+      T item,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new()
+    {
+      var key = _serializer.Get(item);
+      var bytes = item.ToBinaryArray();
+      await _cache.SetAsync(key, bytes);
+    }
+
+    public async Task SetSub<T, TSub>(
+      T item,
+      TSub sub,
+      CancellationToken token = default(CancellationToken))
+        where T : class, new()
+        where TSub : class, new()
+    {
+      var key = _serializer.Get(item, sub);
+      var bytes = sub.ToBinaryArray();
+      await _cache.SetAsync(key, bytes);
     }
   }
 }

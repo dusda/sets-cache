@@ -23,11 +23,11 @@ namespace DusdaCache
     public int Bedrooms { get; set; }
     [CacheMember(3)]
     public int Bathrooms { get; set; }
-    [CacheMember(4, "location")]
+    [CacheMember(4)]
     public string City { get; set; }
-    [CacheMember(5, "location")]
+    [CacheMember(5)]
     public string State { get; set; }
-    [CacheMember(6, "location")]
+    [CacheMember(6)]
     public string Zip { get; set; }
     
     public override string Hash()
