@@ -10,10 +10,10 @@ namespace DusdaCache.Redis
   public class DisduCache : ISetsCache
   {
     IDistributedCache _cache;
-    CacheMemberSerializer _serializer;
+    ICacheMemberSerializer _serializer;
     public DisduCache(
       IDistributedCache cache,
-      CacheMemberSerializer serializer)
+      ICacheMemberSerializer serializer)
     {
       _cache = cache;
       _serializer = serializer;

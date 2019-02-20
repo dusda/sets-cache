@@ -13,6 +13,7 @@ namespace DusdaCache
     string Get<T>(T item);
     string Get<T, TSub>(T item, TSub sub);
     string[] GetSubsets<T>(T obj);
+    string[] GetSubsets<T, TSub>(T obj, TSub sub);
     T Parse<T>(string key) where T : class, new();
     (T item, TSub sub) Parse<T, TSub>(string key)
       where T : class, new()
@@ -91,6 +92,16 @@ namespace DusdaCache
       }
 
       return keys.Distinct().ToArray();
+    }
+
+    public string[] GetSubsets<T, TSub>(T obj, TSub sub)
+    {
+      var subKey = Get(sub);
+      var keys = GetSubsets(obj)
+        .Select(f => f + $":{subKey}")
+        .ToArray();
+
+      return keys;
     }
 
     public T Parse<T>(string key) where T : class, new()

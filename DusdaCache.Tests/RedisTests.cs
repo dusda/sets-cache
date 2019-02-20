@@ -20,6 +20,7 @@ namespace DusdaCache.Tests
         })
         .AddSingleton<ICacheMemberSerializer, CacheMemberSerializer>()
         .AddScoped<ISetsCache, Redis.DisduCache>()
+        .AddScoped<Services.SeoService>()
         .BuildServiceProvider();
     }
 
@@ -103,6 +104,8 @@ namespace DusdaCache.Tests
     public void Subsets()
     {
       var _serializer = services.GetService<ICacheMemberSerializer>();
+      var _cache = services.GetService<ISetsCache>();
+
       var search = new ListingSearch
       {
         PropertyType = PropertyType.Apartment,
@@ -113,7 +116,33 @@ namespace DusdaCache.Tests
         Zip = "97209"
       };
 
+      var m = (city: "Portland", state: "OR", count: 2);
+
+      var title = $"{m.count} Places for Rent in {m.city}, {m.state} | Rentler";
+      var template = "Rentler makes it easy to find houses or apartments for " +
+        $"rent in {m.city}, {m.state}. Unlike many other rental sites, Rentler " +
+        "lets you search [houses], [townhomes], [condos], or [apartments] for " +
+        "rent - all in one place. And our easy to use search can help you find " +
+        "somewhere with just the right amenities, whether you want a " +
+        "[house with a washer and dryer], or an [apartment with a pool].";
+
       var keys = _serializer.GetSubsets(search);
+    }
+
+    [Fact]
+    public async Task Fill()
+    {
+      var seo = services.GetService<Services.SeoService>();
+
+      var search = new ListingSearch
+      {
+        Bedrooms = 3,
+        Bathrooms = 2,
+        City = "Portland",
+        State = "OR"
+      };
+
+      var data = await seo.GetData(search);
     }
 
     /// <summary>
