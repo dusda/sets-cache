@@ -21,13 +21,9 @@ namespace DusdaCache.Tests
         .AddSingleton<ICacheMemberSerializer, CacheMemberSerializer>()
         .AddScoped<ISetsCache, Redis.DisduCache>()
         .BuildServiceProvider();
-    }
 
-    [Fact]
-    public void RedisRunning()
-    {
+      //check that redis is running
       var cache = services.GetService<IDistributedCache>();
-
       try
       {
         var item = cache.Get("bleh"); //should return null
@@ -36,8 +32,6 @@ namespace DusdaCache.Tests
       {
         throw new Exception("Looks like redis isn't running, did you run docker-compose up?");
       }
-
-      Assert.True(true);
     }
 
     [Fact]
