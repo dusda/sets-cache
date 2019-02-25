@@ -38,7 +38,7 @@ namespace DusdaCache.Tests
         City = "Portland",
         State = "OR"
       };
-
+    
       Func<Task<IDatabase>> getDb = async () =>
       {
         var options = services.GetService<IOptions<RedisCacheOptions>>();
@@ -80,16 +80,19 @@ namespace DusdaCache.Tests
         var service = services.GetService<Services.SeoService>();
 
         //ask for it, this will populate the seo list with keys
-        await service.GetData<ListingSearch, ListingSearchSeo>(search);
+        var seo = await service.GetData<ListingSearch, ListingSearchSeo>(search);
+        Assert.Null(seo);
 
+        //fill
         var filler = services.GetService<Services.SeoFiller>();
         long length = await filler.FillAsync();
         while (length > 0)
           length = await filler.FillAsync();
 
-        var seo = await service.GetData<ListingSearch, ListingSearchSeo>(search);
-
+        //ask agin, this time it will have it.
+        seo = await service.GetData<ListingSearch, ListingSearchSeo>(search);
         Assert.NotNull(seo);
+        Assert.Equal(seo.City, "Portland");
       }
       finally
       {
