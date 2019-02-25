@@ -22,6 +22,7 @@ namespace DusdaCache
 
   public class CacheMemberSerializer : ICacheMemberSerializer
   {
+    readonly char[] delimiters = new char[] { ':', '-', '#' };
     public string Get<T>()
     {
       var type = typeof(CacheMemberAttribute);
@@ -135,7 +136,7 @@ namespace DusdaCache
           if (key.Substring(index, 1) == "-")
           {
             var chars = key.Substring(index + 1)
-              .TakeWhile(f => f != '-')
+              .TakeWhile(f => !delimiters.Contains(f))
               .ToArray();
 
             prop.SetValue(item, new string(chars));

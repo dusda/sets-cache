@@ -16,11 +16,10 @@ namespace DusdaCache.Tests
         .AddDistributedRedisCache(o =>
         {
           o.Configuration = "localhost:6388";
-          o.InstanceName = "Tests";
+          o.InstanceName = "RedisTests";
         })
         .AddSingleton<ICacheMemberSerializer, CacheMemberSerializer>()
         .AddScoped<ISetsCache, Redis.DisduCache>()
-        .AddScoped<Services.SeoService>()
         .BuildServiceProvider();
     }
 
@@ -51,7 +50,8 @@ namespace DusdaCache.Tests
 
       var res = await cache.GetSub(search, sub);
 
-      Assert.Equal(sub.Nearby, res.Nearby);
+      Assert.Equal(sub.City, res.City);
+      Assert.Equal(sub.State, sub.State);
       Assert.Equal(sub.Views, res.Views);
     }
 
@@ -64,9 +64,10 @@ namespace DusdaCache.Tests
       var sub = stuff.sub;
       var key = "222-Portland-OR-97209";
 
-      var res = await cache.GetSub<ListingSearchItems>(key);
+      var res = await cache.GetSub<ListingSearchSeo>(key);
 
-      Assert.Equal(sub.Nearby, res.Nearby);
+      Assert.Equal(sub.City, res.City);
+      Assert.Equal(sub.State, res.State);
       Assert.Equal(sub.Views, res.Views);
     }
 
@@ -79,9 +80,10 @@ namespace DusdaCache.Tests
       var items = stuff.sub;
 
       string key = "222-Portland-OR-97209";
-      var res = await cache.GetSub<ListingSearchItems>(key);
+      var res = await cache.GetSub<ListingSearchSeo>(key);
 
-      Assert.Equal(items.Nearby, res.Nearby);
+      Assert.Equal(items.City, res.City);
+      Assert.Equal(items.State, res.State);
       Assert.Equal(items.Views, res.Views);
     }
 
@@ -93,10 +95,11 @@ namespace DusdaCache.Tests
       var search = stuff.search;
       var items = stuff.sub;
 
-      string key = "222-Portland-OR-97209:ListingSearchItems";
-      var res = await cache.GetSub<ListingSearchItems>(key);
+      string key = "222-Portland-OR-97209:ListingSearchSeo";
+      var res = await cache.GetSub<ListingSearchSeo>(key);
 
-      Assert.Equal(items.Nearby, res.Nearby);
+      Assert.Equal(items.City, res.City);
+      Assert.Equal(items.State, res.State);
       Assert.Equal(items.Views, res.Views);
     }
 
@@ -118,6 +121,7 @@ namespace DusdaCache.Tests
 
       var m = (city: "Portland", state: "OR", count: 2);
 
+      //[items] should link to stuff, like [apartments] = /places-for-rent/portland/or?PropertyTypes=2
       var title = $"{m.count} Places for Rent in {m.city}, {m.state} | Rentler";
       var template = "Rentler makes it easy to find houses or apartments for " +
         $"rent in {m.city}, {m.state}. Unlike many other rental sites, Rentler " +
@@ -129,29 +133,13 @@ namespace DusdaCache.Tests
       var keys = _serializer.GetSubsets(search);
     }
 
-    [Fact]
-    public async Task Fill()
-    {
-      var seo = services.GetService<Services.SeoService>();
-
-      var search = new ListingSearch
-      {
-        Bedrooms = 3,
-        Bathrooms = 2,
-        City = "Portland",
-        State = "OR"
-      };
-
-      var data = await seo.GetData(search);
-    }
-
     /// <summary>
     /// Sets up test data, returns a tuple with everything needed in the tests here.
     /// </summary>
     async Task<(
       ISetsCache cache,
       ListingSearch search,
-      ListingSearchItems sub)>
+      ListingSearchSeo sub)>
     Set()
     {
       var cache = services.GetService<ISetsCache>();
@@ -166,14 +154,11 @@ namespace DusdaCache.Tests
         Zip = "97209"
       };
 
-      var sub = new ListingSearchItems
+      var sub = new ListingSearchSeo
       {
         Views = 1,
-        Nearby = new string[]
-         {
-           "Beaverton",
-           "Gresham"
-         }
+        City = "Portland",
+        State = "OR"
       };
 
       await cache.SetSub(search, sub);

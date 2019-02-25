@@ -3,12 +3,15 @@ using ProtoBuf;
 namespace DusdaCache.Tests
 {
   [ProtoContract, CacheMember]
-  public class ListingSearchItems
+  public class ListingSearchSeo
   {
     [ProtoMember(1)]
     public int Views { get; set; }
 
     [ProtoMember(2)]
-    public string[] Nearby { get; set; }
+    public string City { get; set; }
+
+    [ProtoMember(3)]
+    public string State { get; set; }
   }
 }

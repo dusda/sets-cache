@@ -1,55 +1,104 @@
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Redis;
+using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 
 namespace DusdaCache.Services
 {
   public class SeoService
   {
-    ISetsCache _cache;
+    ISetsCache _setsCache;
     ICacheMemberSerializer _serializer;
+    readonly string _list = "seo";
+    volatile ConnectionMultiplexer _connection;
+    readonly RedisCacheOptions _options;
+    IDatabase _cache;
+
+    readonly SemaphoreSlim _lock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
+
     public SeoService(
       ISetsCache cache,
-      ICacheMemberSerializer serializer)
+      ICacheMemberSerializer serializer,
+      IOptions<RedisCacheOptions> options)
     {
-      _cache = cache;
+      _setsCache = cache;
       _serializer = serializer;
+      _options = options.Value;
     }
     public async Task<T> GetData<T>(T item)
       where T : class, new()
     {
       var keys = _serializer.GetSubsets(item);
-      var data = await _cache.Get<T>(keys[0]);
+      var data = await _setsCache.Get<T>(keys[0]);
 
       if (data == null)
-        await Fill(item);
+        await Push(item);
 
       return data;
     }
 
-    public async Task<TSub> GetData<T, TSub>(T item, TSub sub)
+    public async Task<TSub> GetData<T, TSub>(T item)
       where T : class, new()
       where TSub : class, new()
     {
+      TSub sub = null;
       var key = _serializer.Get(item, sub);
-      var data = await _cache.GetSub<TSub>(key);
+      sub = await _setsCache.GetSub<TSub>(key);
 
-      if (data == null)
-        await Fill(item, sub);
+      if (sub == null)
+        await Push(item, sub);
 
-      return data;
+      return sub;
     }
 
-    async Task Fill<T>(T item)
+    async Task Push<T>(T item)
     {
-      var keys = _serializer.GetSubsets(item);
+      await ConnectAsync();
 
-      //for each key, fill with appropriate data.
+      var keys = _serializer.GetSubsets(item)
+        .Select(f => (RedisValue)f)
+        .ToArray();
+
+      await _cache.ListRightPushAsync(_list, keys);
     }
 
-    async Task Fill<T, TSub>(T item, TSub sub)
+    async Task Push<T, TSub>(T item, TSub sub)
     {
-      var keys = _serializer.GetSubsets(item, sub);
+      await ConnectAsync();
 
-      //for each key, fill with appropriate data.
+      var keys = _serializer.GetSubsets(item, sub)
+        .Select(f => (RedisValue)f)
+        .ToArray();
+
+      await _cache.ListRightPushAsync(_list, keys);
+    }
+
+    async Task ConnectAsync(CancellationToken token = default(CancellationToken))
+    {
+      token.ThrowIfCancellationRequested();
+
+      if (_cache != null)
+        return;
+
+      await _lock.WaitAsync(token);
+      try
+      {
+        if (_cache == null)
+        {
+          if (_options.ConfigurationOptions != null)
+            _connection = await ConnectionMultiplexer.ConnectAsync(_options.ConfigurationOptions);
+          else
+            _connection = await ConnectionMultiplexer.ConnectAsync(_options.Configuration);
+
+          _cache = _connection.GetDatabase();
+        }
+      }
+      finally
+      {
+        _lock.Release();
+      }
     }
   }
 }
