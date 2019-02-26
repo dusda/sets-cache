@@ -4,5 +4,16 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
-  
+
+  <PropertyGroup>
+    <PackageId>sets-cache</PackageId>
+    <Title>sets-cache</Title>
+    <PackageDescription>Aimed at addressing caching of highly variable objects proactively, while being straightforward to maintain.</PackageDescription>
+    <Version>0.1</Version>
+    <Authors>Dustin Dahl</Authors>
+    <Company>Dustin Dahl</Company>
+    <IncludeSource>true</IncludeSource>
+    <RepositoryUrl>https://github.com/dusda/sets-cache</RepositoryUrl>
+  </PropertyGroup>
+
 </Project>
