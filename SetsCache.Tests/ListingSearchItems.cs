@@ -1,6 +1,6 @@
 using ProtoBuf;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   [ProtoContract, CacheMember]
   public class ListingSearchSeo

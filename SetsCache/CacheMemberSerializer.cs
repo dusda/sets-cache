@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace DusdaCache
+namespace SetsCache
 {
   public interface ICacheMemberSerializer
   {

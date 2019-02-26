@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public enum PropertyType
   {

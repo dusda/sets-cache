@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public class CacheKeyTests
   {

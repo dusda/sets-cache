@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public class Listing
   {

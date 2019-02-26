@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public class CacheKeyParseTests
   {

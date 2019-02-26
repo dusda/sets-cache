@@ -1,7 +1,7 @@
 using System.Linq;
 using Xunit;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public class SubsetSolverTests
   {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using Xunit;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public class SeoTests
   {
@@ -23,7 +23,7 @@ namespace DusdaCache.Tests
           o.ConfigurationOptions.AllowAdmin = true;
         })
         .AddSingleton<ICacheMemberSerializer, CacheMemberSerializer>()
-        .AddScoped<ISetsCache, Redis.DisduCache>()
+        .AddScoped<ISetsCache, Redis.RedisSetsCache>()
         .AddScoped<Services.SeoService>()
         .AddScoped<Services.SeoFiller>()
         .BuildServiceProvider();

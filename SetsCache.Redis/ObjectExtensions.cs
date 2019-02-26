@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using ProtoBuf;
 
-namespace DusdaCache.Extensions
+namespace SetsCache.Extensions
 {
   public static class ObjectExtensions
   {

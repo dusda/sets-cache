@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public class RedisTests
   {
@@ -19,7 +19,7 @@ namespace DusdaCache.Tests
           o.InstanceName = "RedisTests";
         })
         .AddSingleton<ICacheMemberSerializer, CacheMemberSerializer>()
-        .AddScoped<ISetsCache, Redis.DisduCache>()
+        .AddScoped<ISetsCache, Redis.RedisSetsCache>()
         .BuildServiceProvider();
 
       //check that redis is running

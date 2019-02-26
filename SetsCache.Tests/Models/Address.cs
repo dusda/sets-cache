@@ -1,4 +1,4 @@
-namespace DusdaCache.Tests
+namespace SetsCache.Tests
 {
   public class Address
   {

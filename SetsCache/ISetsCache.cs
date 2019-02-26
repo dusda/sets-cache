@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DusdaCache
+namespace SetsCache
 {
     public interface ISetsCache
   {

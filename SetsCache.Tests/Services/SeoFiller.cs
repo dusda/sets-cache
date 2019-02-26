@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
-namespace DusdaCache.Services
+namespace SetsCache.Services
 {
   public class SeoFiller
   {

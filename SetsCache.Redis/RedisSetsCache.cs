@@ -1,17 +1,17 @@
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
-using DusdaCache;
+using SetsCache;
 using System;
-using DusdaCache.Extensions;
+using SetsCache.Extensions;
 
-namespace DusdaCache.Redis
+namespace SetsCache.Redis
 {
-  public class DisduCache : ISetsCache
+  public class RedisSetsCache : ISetsCache
   {
     IDistributedCache _cache;
     ICacheMemberSerializer _serializer;
-    public DisduCache(
+    public RedisSetsCache(
       IDistributedCache cache,
       ICacheMemberSerializer serializer)
     {

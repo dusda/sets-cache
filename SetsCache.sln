@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DusdaCache", "DusdaCache\DusdaCache.csproj", "{0BA3F339-4D3B-4D45-B419-A4772C29E006}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetsCache", "SetsCache\SetsCache.csproj", "{0BA3F339-4D3B-4D45-B419-A4772C29E006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DusdaCache.Tests", "DusdaCache.Tests\DusdaCache.Tests.csproj", "{0CEBC88A-B2F5-4FF5-B2F5-147597C9BC95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetsCache.Tests", "SetsCache.Tests\SetsCache.Tests.csproj", "{0CEBC88A-B2F5-4FF5-B2F5-147597C9BC95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DusdaCache.Redis", "DusdaCache.Redis\DusdaCache.Redis.csproj", "{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetsCache.Redis", "SetsCache.Redis\SetsCache.Redis.csproj", "{6A4B82F9-E2D0-46FA-B3BC-4F8D53DF02E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

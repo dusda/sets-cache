@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DusdaCache
+namespace SetsCache
 {
   /// <summary>
   /// Use to mark a property for serialization to a cachekey/value.

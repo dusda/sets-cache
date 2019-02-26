@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DusdaCache\DusdaCache.csproj" />
-    <ProjectReference Include="..\DusdaCache.Redis\DusdaCache.Redis.csproj" />
+    <ProjectReference Include="..\SetsCache\SetsCache.csproj" />
+    <ProjectReference Include="..\SetsCache.Redis\SetsCache.Redis.csproj" />
   </ItemGroup>
 
 </Project>

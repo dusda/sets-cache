@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DusdaCache\DusdaCache.csproj" />
+    <ProjectReference Include="..\SetsCache\SetsCache.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,4 +4,4 @@ Blah.
 
 ## Tests
 
-Run ```docker-compose up -d``` on the compose file in DusdaCache.Tests before you run tests.
+Run ```docker-compose up -d``` on the compose file in SetsCache.Tests before you run tests.
