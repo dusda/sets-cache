@@ -92,7 +92,7 @@ namespace SetsCache.Tests
         //ask agin, this time it will have it.
         seo = await service.GetData<ListingSearch, ListingSearchSeo>(search);
         Assert.NotNull(seo);
-        Assert.Equal(seo.City, "Portland");
+        Assert.Equal("Portland", seo.City);
       }
       finally
       {
