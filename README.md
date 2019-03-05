@@ -1,5 +1,7 @@
 # Overview
 
+![build status](https://api.travis-ci.com/dusda/sets-cache.svg?branch=master)
+
 SetsCache is aimed at addressing the caching of highly variable objects in a consistent and proactive way that is easy to maintain. Generating cache keys and filling a range of possible hits *before* they're requested is the main idea.
 
 ## Setup
