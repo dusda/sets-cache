@@ -18,7 +18,6 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    condition: "$TRAVIS_TAG =~ /^(\\\d+\\\.)?(\\\d+\\\.)?(\\\*|\\\d+)$/"
   provider: script
   script:
   - cd src
