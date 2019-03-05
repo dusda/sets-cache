@@ -7,7 +7,7 @@ services:
   - docker
 script:
   - cd src
-  - docker-compose -f src/SetsCache.Tests/docker-compose.yml up -d
+  - docker-compose -f SetsCache.Tests/docker-compose.yml up -d
   - dotnet restore
   - dotnet test
 global:
