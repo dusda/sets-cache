@@ -18,7 +18,7 @@ namespace SetsCache.Tests
     [Fact]
     public void CacheTest()
     {
-      var serializer = new CacheMemberSerializer();      
+      var serializer = new CacheMemberSerializer();
       var search = new ListingSearch
       {
         PropertyType = PropertyType.Any,
@@ -60,6 +60,26 @@ namespace SetsCache.Tests
       var res = serializer.GetSubsets(search);
 
       Assert.Equal(set, res);
+    }
+
+    //[#164384571]
+    [Fact]
+    public void CacheMemberParsingCorrectlyDelimits()
+    {
+      //should be 1-Portland-2-OR-5
+      var serializer = new CacheMemberSerializer();
+      var search = new SomeSearch
+      {
+        PropertyType = PropertyType.Apartment,
+        City = "Portland",
+        State = "OR",
+        Beds = 2,
+        Baths = 5
+      };
+
+      var key = serializer.Get(search);
+
+      Assert.Equal("2-Portland-5-OR-2", key);
     }
   }
 }

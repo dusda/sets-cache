@@ -4,13 +4,11 @@ namespace SetsCache.Tests
 {
   public abstract class SearchBase<T>
   {
-    public IList<T> Items {get;set;}
+    public IList<T> Items { get; set; }
     public int TotalItems { get; set; }
     public int Page { get; set; }
     public int PageSize { get; set; }
     public int TotalPages { get; set; }
-
-    public abstract string Hash();
   }
 
   public class ListingSearch : SearchBase<Listing>
@@ -29,16 +27,5 @@ namespace SetsCache.Tests
     public string State { get; set; }
     [CacheMember(6)]
     public string Zip { get; set; }
-    
-    public override string Hash()
-    {
-      // Here's the key scheme
-      // {Property Stuff}-{Location}
-      // {PropertyType}{Beds}{Baths}-{City}-{State}-{Zip}
-      // ex: 031-portland,or-97209
-
-      return $"{(int)PropertyType}{Bedrooms}{Bathrooms}-{City},{State}-{Zip}"
-        .ToLower();      
-    }
   }
 }
