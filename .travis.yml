@@ -1,0 +1,11 @@
+language: csharp
+solution: ./src/SetsCache.sln
+mono: none
+dotnet : 2.2.104
+install:
+  - nuget restore ./src/SetsCache.sln
+  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+script:
+  - dotnet restore ./src/
+  - msbuild /p:Configuration=Release ./src/SetsCache.sln
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./src/SetsCache.Tests/bin/Release/SetsCache.Tests.dll
