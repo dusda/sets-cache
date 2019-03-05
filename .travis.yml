@@ -1,0 +1,15 @@
+language: csharp
+solution: ./src/SetsCache.sln
+mono: none
+dotnet : 2.2
+dist: xenial
+services:
+  - docker
+script:
+  - cd src
+  - docker-compose -f SetsCache.Tests/docker-compose.yml up -d
+  - dotnet restore
+  - dotnet test
+global:
+  - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+  - DOTNET_CLI_TELEMETRY_OPTOUT=1

@@ -49,7 +49,7 @@ namespace SetsCache
         .Select(p => GetValue(item, p))
         .ToList();
 
-      var key = string.Join(string.Empty, props);
+      var key = CleanKey(string.Join(string.Empty, props));
 
       return key;
     }
@@ -88,7 +88,7 @@ namespace SetsCache
           else
             sb.Append(GetValue(obj, props[subset[i] - 1]));
 
-        keys.Add(sb.ToString());
+        keys.Add(CleanKey(sb.ToString()));
         sb.Clear();
       }
 
@@ -161,7 +161,7 @@ namespace SetsCache
       return item;
     }
 
-    readonly string[] defaults = new string[] { "0", "-", string.Empty };
+    readonly string[] defaults = new string[] { "0", "--", string.Empty };
     string GetValue<T>(T value, PropertyInfo prop)
     {
       var attr = prop.GetCustomAttributes(typeof(CacheMemberAttribute), false)
@@ -171,16 +171,18 @@ namespace SetsCache
       //attempt to parse as a hexidecimal int (0-f),
       //fallback to a string.
       string fVal = string.Empty;
-      if ((prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum))
+      if ((prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum || Nullable.GetUnderlyingType(prop.PropertyType)?.IsEnum == true))
       {
         if ((int)val > 0xf)
           throw new ArgumentException("Integer value must be less than or equal to 15");
         fVal = ((int)val).ToString("X");
       }
       else
-        fVal = $"-{val}";
+        fVal = $"-{val}-";
 
       return !defaults.Contains(fVal) ? fVal : "#";
     }
+
+    string CleanKey(string key) => key.Replace("--", "-").Trim('-');
   }
 }
