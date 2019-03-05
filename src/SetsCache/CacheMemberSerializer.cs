@@ -171,7 +171,7 @@ namespace SetsCache
       //attempt to parse as a hexidecimal int (0-f),
       //fallback to a string.
       string fVal = string.Empty;
-      if ((prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum))
+      if ((prop.PropertyType == typeof(int) || prop.PropertyType.IsEnum || Nullable.GetUnderlyingType(prop.PropertyType)?.IsEnum == true))
       {
         if ((int)val > 0xf)
           throw new ArgumentException("Integer value must be less than or equal to 15");

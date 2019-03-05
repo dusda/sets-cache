@@ -64,7 +64,7 @@ namespace SetsCache.Tests
 
     //[#164384571]
     [Fact]
-    public void CacheMemberParsingCorrectlyDelimits()
+    public void CorrectlyDelimitsMixedTypes()
     {
       //should be 1-Portland-2-OR-5
       var serializer = new CacheMemberSerializer();
@@ -73,13 +73,28 @@ namespace SetsCache.Tests
         PropertyType = PropertyType.Apartment,
         City = "Portland",
         State = "OR",
-        Beds = 2,
-        Baths = 5
+        Beds = 3,
+        Baths = 2
       };
 
       var key = serializer.Get(search);
 
-      Assert.Equal("2-Portland-5-OR-2", key);
+      Assert.Equal("2-Portland-2-OR-3", key);
+    }
+
+    [Fact]
+    public void CorrectlyParsesNullableEnums()
+    {
+      var serializer = new CacheMemberSerializer();
+      var search = new SomeSearchNullable
+      {
+        PropertyType = PropertyType.Apartment,
+        Bedrooms = 3,
+        Bathrooms = 2
+      };
+
+      var key = serializer.Get(search);
+      Assert.Equal("232", key);
     }
   }
 }
