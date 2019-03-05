@@ -3,8 +3,11 @@ solution: ./src/SetsCache.sln
 mono: none
 dotnet : 2.2
 dist: xenial
+services:
+  - docker
 script:
   - cd src
+  - docker-compose -f src/SetsCache.Tests/docker-compose.yml up -d
   - dotnet restore
   - dotnet test
 global:
