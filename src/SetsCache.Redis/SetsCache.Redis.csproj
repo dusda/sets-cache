@@ -9,7 +9,7 @@
     <PackageId>sets-cache-redis</PackageId>
     <Title>sets-cache-redis</Title>
     <PackageDescription>Aimed at addressing caching of highly variable objects proactively, while being straightforward to maintain.</PackageDescription>
-    <Version>0.1</Version>
+    <Version>0.2.0</Version>
     <Authors>Dustin Dahl</Authors>
     <Company>Dustin Dahl</Company>
     <IncludeSource>true</IncludeSource>
