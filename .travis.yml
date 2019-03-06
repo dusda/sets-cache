@@ -19,7 +19,7 @@ deploy:
   on:
     tags: true
   provider: script
-  script: bash ./publish.sh $NUGET_API_KEY
+  script: sh publish.sh $NUGET_API_KEY
 env:
   global:
     secure: CaIumQHLn47iDYEZxBDz6xHD7fuEeLQ5H279aMeV66mLLMOykqi7Apwm9PT4nvNMTghJx5sHVUBuQDkRev0HzwdXBQHThIE0LaFMGG9hSlqELvc/y227WVsX1rDPaVLbiQUelBjkfBZZK04wXfr4Q/3GDMCbzXMHnoaGSqylHKAQ+1iSbMTfuG8eUiyGa0OL6BJ47+eSbq3mnB1m2AtPw74Ez9icfFFwKm6N57rIesGMzdba2/WPTRPzQkj0ozgQMnJwTKeE3E9Th+N6dB+1NVY8w5E1THmsTLh9+qMN4GjoEcZ6kp+Mvg9ICXmQ3pD2d85PoIwWlqOV/UCzdgFaKqyEsGYW1wHVhVGZAwzP24XONEL70C3Au2ZeryJCYtrlyhkLSMI2ZtMQrQ2DdPvVpOT33dzZx1KWgRvWIjjBAbrnNTOK3Q8PkNTp7VGnDfZ5xKGYoa+PN4uu52olF87T8KKbl6/Bx6+3qwqXuK2xaffFWso0k+bUwre+6/Q8fJn36l20Tmalhm9pwpwwpTqIpj0wkQXiAGvg2XqcY8LriIa1U6xCQIbGND+uqAvmgywvS2/oplrrD9JZObbddE2SnfXNPoXE1OJraaA51wSyQOZamNW4DO26BoC0lnmX0yE8u9NP8uG6wV4+GgXMzxs89pow17GFbyfM7G/BZ6sTuSQ=
