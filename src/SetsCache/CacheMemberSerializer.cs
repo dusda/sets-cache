@@ -134,14 +134,14 @@ namespace SetsCache
         else
         {
           if (key.Substring(index, 1) == "-")
-          {
-            var chars = key.Substring(index + 1)
-              .TakeWhile(f => !delimiters.Contains(f))
-              .ToArray();
+            index++;
 
-            prop.SetValue(item, new string(chars));
-            index += chars.Length + 1;
-          }
+          var chars = key.Substring(index)
+            .TakeWhile(f => !delimiters.Contains(f))
+            .ToArray();
+
+          prop.SetValue(item, new string(chars));
+          index += chars.Length + 1;
         }
       }
 
