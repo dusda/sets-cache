@@ -18,5 +18,28 @@ namespace SetsCache.Tests
       Assert.Equal("OR", item.State);
       Assert.Equal("97209", item.Zip);
     }
+
+    [Fact]
+    public void ParsesOnlyStrings()
+    {
+      var serializer = new CacheMemberSerializer();
+      var key = "Sandy-UT";
+      var item = serializer.Parse<StringsOnlySearch>(key);
+
+      Assert.Equal("Sandy", item.City);
+      Assert.Equal("UT", item.State);
+    }
+
+    [Fact]
+    public void ParsesOnlyInts()
+    {
+      var serializer = new CacheMemberSerializer();
+      var key = "123";
+      var item = serializer.Parse<IntsOnlySearch>(key);
+
+      Assert.Equal(1, item.Beds);
+      Assert.Equal(2, item.Baths);
+      Assert.Equal(3, (int)item.PropertyType);
+    }
   }
 }
