@@ -13,7 +13,7 @@ namespace SetsCache.Tests
     public RedisTests()
     {
       services = new ServiceCollection()
-        .AddDistributedRedisCache(o =>
+        .AddStackExchangeRedisCache(o =>
         {
           o.Configuration = "localhost:6388";
           o.InstanceName = "RedisTests";
