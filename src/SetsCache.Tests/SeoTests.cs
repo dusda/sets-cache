@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Redis;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
@@ -15,7 +15,7 @@ namespace SetsCache.Tests
     public SeoTests()
     {
       services = new ServiceCollection()
-        .AddDistributedRedisCache(o =>
+        .AddStackExchangeRedisCache(o =>
         {
           o.Configuration = "localhost:6388";
           o.InstanceName = "SeoTests:";
